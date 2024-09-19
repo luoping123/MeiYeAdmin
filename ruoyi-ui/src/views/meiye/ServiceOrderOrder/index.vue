@@ -52,7 +52,7 @@
           icon="el-icon-check"
           size="mini"
           @click="handleHeYan"
-          v-hasPermi="['meiye:ServiceOrderOrder:edit']"
+          v-hasPermi="['meiye:ServiceOrder:edit']"
         >核验券码</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -62,7 +62,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['meiye:ServiceOrderOrder:export']"
+          v-hasPermi="['meiye:ServiceOrder:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
