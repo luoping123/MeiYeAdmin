@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.GoodsDetailsMapper">
+    
+    <resultMap type="GoodsDetails" id="GoodsDetailsResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="swiperUrl"    column="swiper_url"    />
+        <result property="swiperType"    column="swiper_type"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="freight"    column="freight"    />
+        <result property="content"    column="content"    />
+    </resultMap>
+
+    <sql id="selectGoodsDetailsVo">
+        select id, goods_id, swiper_url, swiper_type, price_type, freight, content from goods_details
+    </sql>
+
+    <select id="selectGoodsDetailsList" parameterType="GoodsDetails" resultMap="GoodsDetailsResult">
+        <include refid="selectGoodsDetailsVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="swiperUrl != null  and swiperUrl != ''"> and swiper_url = #{swiperUrl}</if>
+            <if test="swiperType != null  and swiperType != ''"> and swiper_type = #{swiperType}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsDetailsById" parameterType="Long" resultMap="GoodsDetailsResult">
+        <include refid="selectGoodsDetailsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsDetails" parameterType="GoodsDetails" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goods_id,</if>
+            <if test="swiperUrl != null">swiper_url,</if>
+            <if test="swiperType != null">swiper_type,</if>
+            <if test="priceType != null">price_type,</if>
+            <if test="freight != null">freight,</if>
+            <if test="content != null">content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="swiperUrl != null">#{swiperUrl},</if>
+            <if test="swiperType != null">#{swiperType},</if>
+            <if test="priceType != null">#{priceType},</if>
+            <if test="freight != null">#{freight},</if>
+            <if test="content != null">#{content},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsDetails" parameterType="GoodsDetails">
+        update goods_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="swiperUrl != null">swiper_url = #{swiperUrl},</if>
+            <if test="swiperType != null">swiper_type = #{swiperType},</if>
+            <if test="priceType != null">price_type = #{priceType},</if>
+            <if test="freight != null">freight = #{freight},</if>
+            <if test="content != null">content = #{content},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsDetailsById" parameterType="Long">
+        delete from goods_details where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsDetailsByIds" parameterType="String">
+        delete from goods_details where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

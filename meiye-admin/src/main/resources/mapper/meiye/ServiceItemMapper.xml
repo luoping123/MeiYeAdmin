@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.ServiceItemMapper">
+    
+    <resultMap type="ServiceItem" id="ServiceItemResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="subName"    column="sub_name"    />
+        <result property="imageSrc"    column="image_src"    />
+        <result property="olderPrice"    column="older_price"    />
+        <result property="nowPrice"    column="now_price"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="isLimitKill"    column="is_limit_kill"    />
+    </resultMap>
+
+    <resultMap type="ServiceItemAndCate" id="ServiceItemAndCateResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="subName"    column="sub_name"    />
+        <result property="imageSrc"    column="image_src"    />
+        <result property="olderPrice"    column="older_price"    />
+        <result property="nowPrice"    column="now_price"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="isLimitKill"    column="is_limit_kill"    />
+    </resultMap>
+
+    <resultMap type="ServiceItemAndDetail" id="ServiceItemAndDetailResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="subName"    column="sub_name"    />
+        <result property="imageSrc"    column="image_src"    />
+        <result property="olderPrice"    column="older_price"    />
+        <result property="nowPrice"    column="now_price"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="isLimitKill"    column="is_limit_kill"    />
+        <result property="detailId"    column="detailId"    />
+        <result property="swiperUrl"    column="swiper_url"    />
+        <result property="swiperType"    column="swiper_type"    />
+        <result property="content"    column="content"    />
+    </resultMap>
+
+    <sql id="selectServiceItemVo">
+        select id, name, sub_name, image_src, older_price, now_price, cate_id, is_limit_kill from service_item
+    </sql>
+
+    <sql id="selectServiceItemAndCateVo">
+        select s.id, name, sub_name, image_src, older_price, now_price, cate_id , cate_name , is_limit_kill
+        from service_item s join service_item_cate sc on s.cate_id = sc.id
+    </sql>
+
+    <sql id="selectServiceItemAndCateAndDetailVo">
+        select s.id, name, sub_name, image_src, older_price, now_price, cate_id , cate_name , is_limit_kill ,sd.id detailId, swiper_url , swiper_type , content
+        from service_item s,service_item_cate sc,service_item_details sd
+        where s.cate_id = sc.id and s.id = sd.service_id
+    </sql>
+
+    <select id="selectServiceItemList" parameterType="ServiceItem" resultMap="ServiceItemAndCateResult">
+        <include refid="selectServiceItemAndCateVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="subName != null  and subName != ''"> and sub_name like concat('%', #{subName}, '%')</if>
+            <if test="cateId != null "> and cate_id = #{cateId}</if>
+        </where>
+    </select>
+    
+    <select id="selectServiceItemById" parameterType="Long" resultMap="ServiceItemAndDetailResult">
+        <include refid="selectServiceItemAndCateAndDetailVo"/>
+        and s.id = #{id}
+    </select>
+        
+    <insert id="insertServiceItem" parameterType="ServiceItem" useGeneratedKeys="true" keyProperty="id">
+        insert into service_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="subName != null">sub_name,</if>
+            <if test="imageSrc != null">image_src,</if>
+            <if test="olderPrice != null">older_price,</if>
+            <if test="nowPrice != null">now_price,</if>
+            <if test="cateId != null">cate_id,</if>
+            <if test="isLimitKill != null">is_limit_kill,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="subName != null">#{subName},</if>
+            <if test="imageSrc != null">#{imageSrc},</if>
+            <if test="olderPrice != null">#{olderPrice},</if>
+            <if test="nowPrice != null">#{nowPrice},</if>
+            <if test="cateId != null">#{cateId},</if>
+            <if test="isLimitKill != null">#{isLimitKill},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServiceItem" parameterType="ServiceItem">
+        update service_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="subName != null">sub_name = #{subName},</if>
+            <if test="imageSrc != null">image_src = #{imageSrc},</if>
+            <if test="olderPrice != null">older_price = #{olderPrice},</if>
+            <if test="nowPrice != null">now_price = #{nowPrice},</if>
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="isLimitKill != null">is_limit_kill = #{isLimitKill},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteServiceItemById" parameterType="Long">
+        delete from service_item where id = #{id}
+    </delete>
+
+    <delete id="deleteServiceItemByIds" parameterType="String">
+        delete from service_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.BeauticianMapper">
+    
+    <resultMap type="Beautician" id="BeauticianResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="age"    column="age"    />
+        <result property="address"    column="address"    />
+        <result property="tel"    column="tel"    />
+        <result property="img"    column="img"    />
+        <result property="starSum"    column="star_sum"    />
+    </resultMap>
+
+    <resultMap type="BeauticianAndTimeVo" id="BeauticianAndTimeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="age"    column="age"    />
+        <result property="address"    column="address"    />
+        <result property="tel"    column="tel"    />
+        <result property="img"    column="img"    />
+        <result property="starSum"    column="star_sum"    />
+        <result property="timeId"    column="timeId"    />
+        <result property="beauticianId"    column="beautician_id"    />
+        <result property="beauticianTime"    column="beautician_time"    />
+        <result property="number"    column="number"    />
+    </resultMap>
+
+    <sql id="selectBeauticianVo">
+        select id, name, sex, age, address, tel, img, star_sum from beautician
+    </sql>
+
+    <sql id="selectBeauticianAndTimeVo">
+        select b.id, name, sex, age, address, tel, img, star_sum,bt.id timeId , beautician_id , beautician_time, number
+        from beautician b
+        inner join beautician_time bt on b.id = bt.beautician_id
+    </sql>
+
+    <select id="selectBeauticianList" parameterType="Beautician" resultMap="BeauticianResult">
+        <include refid="selectBeauticianVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="tel != null  and tel != ''"> and tel = #{tel}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+        </where>
+    </select>
+
+    <select id="selectBeauticianById" parameterType="Long" resultMap="BeauticianResult">
+        <include refid="selectBeauticianVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBeauticianAndTimeList" parameterType="Beautician" resultMap="BeauticianAndTimeResult">
+        <include refid="selectBeauticianAndTimeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="tel != null  and tel != ''"> and tel = #{tel}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+        </where>
+    </select>
+    
+    <select id="selectBeauticianAndTimeByTimeId" parameterType="Long" resultMap="BeauticianAndTimeResult">
+        <include refid="selectBeauticianAndTimeVo"/>
+        where bt.id = #{timeId}
+    </select>
+        
+    <insert id="insertBeautician" parameterType="Beautician" useGeneratedKeys="true" keyProperty="id">
+        insert into beautician
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="sex != null">sex,</if>
+            <if test="age != null">age,</if>
+            <if test="address != null">address,</if>
+            <if test="tel != null">tel,</if>
+            <if test="img != null">img,</if>
+            <if test="starSum != null">star_sum,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="age != null">#{age},</if>
+            <if test="address != null">#{address},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="img != null">#{img},</if>
+            <if test="starSum != null">#{starSum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBeautician" parameterType="Beautician">
+        update beautician
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="starSum != null">star_sum = #{starSum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBeauticianById" parameterType="Long">
+        delete from beautician where id = #{id}
+    </delete>
+
+    <delete id="deleteBeauticianByIds" parameterType="String">
+        delete from beautician where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

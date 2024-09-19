@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.GridCateMapper">
+    
+    <resultMap type="GridCate" id="GridCateResult">
+        <result property="id"    column="id"    />
+        <result property="icon"    column="icon"    />
+        <result property="name"    column="name"    />
+        <result property="openType"    column="open_type"    />
+        <result property="navigatorUrl"    column="navigator_url"    />
+    </resultMap>
+
+    <sql id="selectGridCateVo">
+        select id, icon, name, open_type, navigator_url from grid_cate
+    </sql>
+
+    <select id="selectGridCateList" parameterType="GridCate" resultMap="GridCateResult">
+        <include refid="selectGridCateVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectGridCateById" parameterType="Long" resultMap="GridCateResult">
+        <include refid="selectGridCateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGridCate" parameterType="GridCate" useGeneratedKeys="true" keyProperty="id">
+        insert into grid_cate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="icon != null">icon,</if>
+            <if test="name != null">name,</if>
+            <if test="openType != null">open_type,</if>
+            <if test="navigatorUrl != null">navigator_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="icon != null">#{icon},</if>
+            <if test="name != null">#{name},</if>
+            <if test="openType != null">#{openType},</if>
+            <if test="navigatorUrl != null">#{navigatorUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGridCate" parameterType="GridCate">
+        update grid_cate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="openType != null">open_type = #{openType},</if>
+            <if test="navigatorUrl != null">navigator_url = #{navigatorUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGridCateById" parameterType="Long">
+        delete from grid_cate where id = #{id}
+    </delete>
+
+    <delete id="deleteGridCateByIds" parameterType="String">
+        delete from grid_cate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.ServiceItemCateMapper">
+    
+    <resultMap type="ServiceItemCate" id="ServiceItemCateResult">
+        <result property="id"    column="id"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="disabled"    column="disabled"    />
+        <result property="isHot"    column="is_hot"    />
+    </resultMap>
+
+    <sql id="selectServiceItemCateVo">
+        select id, cate_name, disabled, is_hot from service_item_cate
+    </sql>
+
+    <select id="selectServiceItemCateList" parameterType="ServiceItemCate" resultMap="ServiceItemCateResult">
+        <include refid="selectServiceItemCateVo"/>
+        <where>  
+            <if test="cateName != null  and cateName != ''"> and cate_name like concat('%', #{cateName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectServiceItemCateById" parameterType="Long" resultMap="ServiceItemCateResult">
+        <include refid="selectServiceItemCateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertServiceItemCate" parameterType="ServiceItemCate" useGeneratedKeys="true" keyProperty="id">
+        insert into service_item_cate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateName != null">cate_name,</if>
+            <if test="disabled != null">disabled,</if>
+            <if test="isHot != null">is_hot,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateName != null">#{cateName},</if>
+            <if test="disabled != null">#{disabled},</if>
+            <if test="isHot != null">#{isHot},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServiceItemCate" parameterType="ServiceItemCate">
+        update service_item_cate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateName != null">cate_name = #{cateName},</if>
+            <if test="disabled != null">disabled = #{disabled},</if>
+            <if test="isHot != null">is_hot = #{isHot},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteServiceItemCateById" parameterType="Long">
+        delete from service_item_cate where id = #{id}
+    </delete>
+
+    <delete id="deleteServiceItemCateByIds" parameterType="String">
+        delete from service_item_cate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.GoodsOrderMapper">
+    
+    <resultMap type="GoodsOrder" id="GoodsOrderResult">
+        <result property="id"    column="id"    />
+        <result property="goodsOrderId"    column="goods_order_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="openId"    column="open_id"    />
+        <result property="goodsIdList"    column="goods_id_list"    />
+        <result property="remark"    column="remark"    />
+        <result property="intergralSum"    column="intergral_sum"    />
+        <result property="priceSum"    column="price_sum"    />
+        <result property="realPrice"    column="real_price"    />
+        <result property="useCoupon"    column="use_coupon"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="payDeadline"    column="pay_deadline"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="isOutTime"    column="is_out_time"    />
+        <result property="receiverName"    column="receiver_name"    />
+        <result property="receiverAddress"    column="receiver_address"    />
+        <result property="receiverPhone"    column="receiver_phone"    />
+        <result property="postalNumber"    column="postal_number"    />
+
+        <result property="uName"    column="uName"    />
+
+        <collection property="goodsList" column="goods_order_id" ofType="Goods">
+            <result property="goodsCateId"    column="goods_cate_id"    />
+            <result property="name"    column="name"    />
+            <result property="imageSrc"    column="image_src"    />
+            <result property="price"    column="price"    />
+            <result property="olderPrice"    column="older_price"    />
+        </collection>
+
+
+    </resultMap>
+
+    <sql id="selectGoodsOrderVo">
+        select o.id, o.goods_order_id, o.user_id, o.open_id, o.goods_id_list, o.remark, o.intergral_sum, o.price_sum, o.real_price, o.use_coupon, o.order_status, o.pay_type, o.pay_time, o.create_time, o.pay_deadline, o.is_deleted, o.is_out_time, o.receiver_name, o.receiver_address, o.receiver_phone, o.postal_number,
+                u.name uName, g.goods_cate_id, g.name, g.image_src, g.price, g.older_price
+        from goods_order o
+        inner join goods_link_order glo on o.goods_order_id = glo.order_id
+        inner join goods g on g.id = glo.goods_id
+        inner join user u on u.open_id = o.open_id
+    </sql>
+
+    <select id="selectGoodsOrderList" parameterType="GoodsOrder" resultMap="GoodsOrderResult">
+        <include refid="selectGoodsOrderVo"/>
+        <where>  
+            <if test="goodsOrderId != null  and goodsOrderId != ''"> and goods_order_id = #{goodsOrderId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="openId != null  and openId != ''"> and open_id = #{openId}</if>
+            <if test="goodsIdList != null  and goodsIdList != ''"> and goods_id_list = #{goodsIdList}</if>
+            <if test="intergralSum != null "> and intergral_sum = #{intergralSum}</if>
+            <if test="priceSum != null "> and price_sum = #{priceSum}</if>
+            <if test="realPrice != null "> and real_price = #{realPrice}</if>
+            <if test="useCoupon != null  and useCoupon != ''"> and use_coupon = #{useCoupon}</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="payTime != null  and payTime != ''"> and pay_time like concat('%',#{payTime}, '%')</if>
+            <if test="payDeadline != null  and payDeadline != ''"> and pay_deadline = #{payDeadline}</if>
+            <if test="isOutTime != null "> and is_out_time = #{isOutTime}</if>
+            <if test="receiverName != null  and receiverName != ''"> and receiver_name like concat('%', #{receiverName}, '%')</if>
+            <if test="receiverAddress != null  and receiverAddress != ''"> and receiver_address = #{receiverAddress}</if>
+            <if test="receiverPhone != null  and receiverPhone != ''"> and receiver_phone = #{receiverPhone}</if>
+            <if test="postalNumber != null  and postalNumber != ''"> and postal_number = #{postalNumber}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsOrderById" parameterType="Long" resultMap="GoodsOrderResult">
+        <include refid="selectGoodsOrderVo"/>
+        where o.id = #{id}
+    </select>
+        
+    <insert id="insertGoodsOrder" parameterType="GoodsOrder">
+        insert into goods_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="goodsOrderId != null">goods_order_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="openId != null">open_id,</if>
+            <if test="goodsIdList != null">goods_id_list,</if>
+            <if test="remark != null">remark,</if>
+            <if test="intergralSum != null">intergral_sum,</if>
+            <if test="priceSum != null">price_sum,</if>
+            <if test="realPrice != null">real_price,</if>
+            <if test="useCoupon != null">use_coupon,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="payDeadline != null">pay_deadline,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="isOutTime != null">is_out_time,</if>
+            <if test="receiverName != null">receiver_name,</if>
+            <if test="receiverAddress != null">receiver_address,</if>
+            <if test="receiverPhone != null">receiver_phone,</if>
+            <if test="postalNumber != null">postal_number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="goodsOrderId != null">#{goodsOrderId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="openId != null">#{openId},</if>
+            <if test="goodsIdList != null">#{goodsIdList},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="intergralSum != null">#{intergralSum},</if>
+            <if test="priceSum != null">#{priceSum},</if>
+            <if test="realPrice != null">#{realPrice},</if>
+            <if test="useCoupon != null">#{useCoupon},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="payDeadline != null">#{payDeadline},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="isOutTime != null">#{isOutTime},</if>
+            <if test="receiverName != null">#{receiverName},</if>
+            <if test="receiverAddress != null">#{receiverAddress},</if>
+            <if test="receiverPhone != null">#{receiverPhone},</if>
+            <if test="postalNumber != null">#{postalNumber},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsOrder" parameterType="GoodsOrder">
+        update goods_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsOrderId != null">goods_order_id = #{goodsOrderId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+            <if test="goodsIdList != null">goods_id_list = #{goodsIdList},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="intergralSum != null">intergral_sum = #{intergralSum},</if>
+            <if test="priceSum != null">price_sum = #{priceSum},</if>
+            <if test="realPrice != null">real_price = #{realPrice},</if>
+            <if test="useCoupon != null">use_coupon = #{useCoupon},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="payDeadline != null">pay_deadline = #{payDeadline},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="isOutTime != null">is_out_time = #{isOutTime},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName},</if>
+            <if test="receiverAddress != null">receiver_address = #{receiverAddress},</if>
+            <if test="receiverPhone != null">receiver_phone = #{receiverPhone},</if>
+            <if test="postalNumber != null">postal_number = #{postalNumber},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsOrderById" parameterType="Long">
+        delete from goods_order where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsOrderByIds" parameterType="String">
+        delete from goods_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

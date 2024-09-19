@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.GoodsCateMapper">
+    
+    <resultMap type="GoodsCate" id="GoodsCateResult">
+        <result property="id"    column="id"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGoodsCateVo">
+        select id, cate_name, create_time, update_time from goods_cate
+    </sql>
+
+    <select id="selectGoodsCateList" parameterType="GoodsCate" resultMap="GoodsCateResult">
+        <include refid="selectGoodsCateVo"/>
+        <where>  
+            <if test="cateName != null  and cateName != ''"> and cate_name like concat('%', #{cateName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsCateById" parameterType="Long" resultMap="GoodsCateResult">
+        <include refid="selectGoodsCateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsCate" parameterType="GoodsCate" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_cate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateName != null">cate_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateName != null">#{cateName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsCate" parameterType="GoodsCate">
+        update goods_cate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateName != null">cate_name = #{cateName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsCateById" parameterType="Long">
+        delete from goods_cate where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsCateByIds" parameterType="String">
+        delete from goods_cate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

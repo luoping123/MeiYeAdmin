@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.GoodsMapper">
+    
+    <resultMap type="Goods" id="GoodsResult">
+        <result property="id"    column="id"    />
+        <result property="goodsCateId"    column="goods_cate_id"    />
+        <result property="name"    column="name"    />
+        <result property="imageSrc"    column="image_src"    />
+        <result property="price"    column="price"    />
+        <result property="olderPrice"    column="older_price"    />
+        <result property="intergralValue"    column="intergral_value"    />
+        <result property="storeNumber"    column="store_number"    />
+        <result property="hotNumber"    column="hot_number"    />
+        <result property="goodsColor"    column="goods_color"    />
+        <result property="goodsSize"    column="goods_size"    />
+        <result property="goodsNum"    column="goods_num"    />
+        <result property="isLimitKill"    column="is_limit_kill"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+
+        <result property="cateName"    column="cate_name"    />
+        <result property="detailId"    column="detailId"    />
+        <result property="swiperUrl"    column="swiper_url"    />
+        <result property="swiperType"    column="swiper_type"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="freight"    column="freight"    />
+        <result property="content"    column="content"    />
+
+
+    </resultMap>
+
+
+    <sql id="selectGoodsVo">
+        select g.id, g.goods_cate_id, g.name, g.image_src, g.price, g.older_price, g.intergral_value, g.store_number, g.hot_number, g.goods_color, g.goods_size, g.goods_num, g.is_limit_kill, g.create_time, g.update_time,
+               gc.cate_name, gd.id detailId, gd.swiper_url, gd.swiper_type, gd.price_type, gd.freight, gd.content
+        from goods g
+        inner join goods_cate gc on g.goods_cate_id = gc.id
+        inner join goods_details gd on g.id = gd.goods_id
+    </sql>
+
+    <select id="selectGoodsList" parameterType="Goods" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        <where>  
+            <if test="goodsCateId != null "> and goods_cate_id = #{goodsCateId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsById" parameterType="Long" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        where g.id = #{id}
+    </select>
+        
+    <insert id="insertGoods" parameterType="Goods" useGeneratedKeys="true" keyProperty="id">
+        insert into goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsCateId != null">goods_cate_id,</if>
+            <if test="name != null">name,</if>
+            <if test="imageSrc != null">image_src,</if>
+            <if test="price != null">price,</if>
+            <if test="olderPrice != null">older_price,</if>
+            <if test="intergralValue != null">intergral_value,</if>
+            <if test="storeNumber != null">store_number,</if>
+            <if test="hotNumber != null">hot_number,</if>
+            <if test="goodsColor != null">goods_color,</if>
+            <if test="goodsSize != null">goods_size,</if>
+            <if test="goodsNum != null">goods_num,</if>
+            <if test="isLimitKill != null">is_limit_kill,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsCateId != null">#{goodsCateId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="imageSrc != null">#{imageSrc},</if>
+            <if test="price != null">#{price},</if>
+            <if test="olderPrice != null">#{olderPrice},</if>
+            <if test="intergralValue != null">#{intergralValue},</if>
+            <if test="storeNumber != null">#{storeNumber},</if>
+            <if test="hotNumber != null">#{hotNumber},</if>
+            <if test="goodsColor != null">#{goodsColor},</if>
+            <if test="goodsSize != null">#{goodsSize},</if>
+            <if test="goodsNum != null">#{goodsNum},</if>
+            <if test="isLimitKill != null">#{isLimitKill},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoods" parameterType="Goods">
+        update goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsCateId != null">goods_cate_id = #{goodsCateId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="imageSrc != null">image_src = #{imageSrc},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="olderPrice != null">older_price = #{olderPrice},</if>
+            <if test="intergralValue != null">intergral_value = #{intergralValue},</if>
+            <if test="storeNumber != null">store_number = #{storeNumber},</if>
+            <if test="hotNumber != null">hot_number = #{hotNumber},</if>
+            <if test="goodsColor != null">goods_color = #{goodsColor},</if>
+            <if test="goodsSize != null">goods_size = #{goodsSize},</if>
+            <if test="goodsNum != null">goods_num = #{goodsNum},</if>
+            <if test="isLimitKill != null">is_limit_kill = #{isLimitKill},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsById" parameterType="Long">
+        delete from goods where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsByIds" parameterType="String">
+        delete from goods where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

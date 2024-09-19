@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.ServiceOrderOrderMapper">
+    
+    <resultMap type="ServiceOrderOrder" id="ServiceOrderOrderResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="qrcodeNumber"    column="qrcode_number"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="serviceItemId"    column="service_item_id"    />
+        <result property="dateId"    column="date_id"    />
+        <result property="timeId"    column="time_id"    />
+        <result property="beauticianId"    column="beautician_id"    />
+        <result property="uid"    column="uid"    />
+        <result property="openId"    column="open_id"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="serviceType"    column="service_type"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="serviceOrderDatetime"    column="service_order_datetime"    />
+        <result property="sumPrice"    column="sum_price"    />
+        <result property="realPay"    column="real_pay"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="isDeleted"    column="is_deleted"    />
+    </resultMap>
+
+    <resultMap type="ServiceOrderOrderAndInfo" id="ServiceOrderOrderAndInfoResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="qrcodeNumber"    column="qrcode_number"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="serviceItemId"    column="service_item_id"    />
+        <result property="dateId"    column="date_id"    />
+        <result property="timeId"    column="time_id"    />
+        <result property="beauticianId"    column="beautician_id"    />
+        <result property="uid"    column="uid"    />
+        <result property="openId"    column="open_id"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="serviceType"    column="service_type"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="serviceOrderDatetime"    column="service_order_datetime"    />
+        <result property="sumPrice"    column="sum_price"    />
+        <result property="realPay"    column="real_pay"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="isDeleted"    column="is_deleted"    />
+
+        <result property="sName"    column="sName"    />
+        <result property="uName"    column="uName"    />
+        <result property="bName"    column="bName"    />
+
+
+    </resultMap>
+
+
+
+    <sql id="selectServiceOrderOrderVo">
+        select order_id, qrcode_number, remarks, create_time, service_item_id, date_id, time_id, beautician_id, uid, open_id, end_date, service_type, order_time, service_order_datetime, sum_price, real_pay, pay_type, pay_time, order_status, is_deleted from service_order_order
+    </sql>
+
+    <sql id="selectServiceOrderOrderAndInforVo">
+        select soo.order_id, soo.qrcode_number, soo.remarks, soo.create_time, soo.service_item_id, soo.date_id, soo.time_id, soo.beautician_id, soo.uid, soo.open_id, soo.end_date, soo.service_type, soo.order_time, soo.service_order_datetime, soo.sum_price, soo.real_pay, soo.pay_type, soo.pay_time, soo.order_status, soo.is_deleted,
+               si.name sName, b.name bName, u.name uName
+        from service_order_order soo
+        inner join service_item si on soo.service_item_id = si.id
+        inner join beautician b on soo.beautician_id = b.id
+        inner join user u on soo.open_id = u.open_id
+    </sql>
+
+    <select id="selectServiceOrderOrderList" parameterType="ServiceOrderOrder" resultMap="ServiceOrderOrderAndInfoResult">
+        <include refid="selectServiceOrderOrderAndInforVo"/>
+        <where>  
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="qrcodeNumber != null  and qrcodeNumber != ''"> and qrcode_number = #{qrcodeNumber}</if>
+            <if test="serviceItemId != null "> and service_item_id = #{serviceItemId}</if>
+            <if test="beauticianId != null "> and beautician_id = #{beauticianId}</if>
+            <if test="endDate != null  and endDate != ''"> and end_date like concat('%',#{endDate}, '%')</if>
+            <if test="serviceType != null  and serviceType != ''"> and service_type = #{serviceType}</if>
+            <if test="orderTime != null  and orderTime != ''"> and order_time = #{orderTime}</if>
+            <if test="serviceOrderDatetime != null  and serviceOrderDatetime != ''"> and service_order_datetime like concat('%',#{serviceOrderDatetime}, '%')</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectServiceOrderOrderByOrderId" parameterType="String" resultMap="ServiceOrderOrderResult">
+        <include refid="selectServiceOrderOrderVo"/>
+        where order_id = #{orderId}
+    </select>
+        
+    <insert id="insertServiceOrderOrder" parameterType="ServiceOrderOrder">
+        insert into service_order_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="qrcodeNumber != null">qrcode_number,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="serviceItemId != null">service_item_id,</if>
+            <if test="dateId != null">date_id,</if>
+            <if test="timeId != null">time_id,</if>
+            <if test="beauticianId != null">beautician_id,</if>
+            <if test="uid != null">uid,</if>
+            <if test="openId != null">open_id,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="serviceType != null">service_type,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="serviceOrderDatetime != null">service_order_datetime,</if>
+            <if test="sumPrice != null">sum_price,</if>
+            <if test="realPay != null">real_pay,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="qrcodeNumber != null">#{qrcodeNumber},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="serviceItemId != null">#{serviceItemId},</if>
+            <if test="dateId != null">#{dateId},</if>
+            <if test="timeId != null">#{timeId},</if>
+            <if test="beauticianId != null">#{beauticianId},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="openId != null">#{openId},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="serviceType != null">#{serviceType},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="serviceOrderDatetime != null">#{serviceOrderDatetime},</if>
+            <if test="sumPrice != null">#{sumPrice},</if>
+            <if test="realPay != null">#{realPay},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServiceOrderOrder" parameterType="ServiceOrderOrder">
+        update service_order_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="qrcodeNumber != null">qrcode_number = #{qrcodeNumber},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="serviceItemId != null">service_item_id = #{serviceItemId},</if>
+            <if test="dateId != null">date_id = #{dateId},</if>
+            <if test="timeId != null">time_id = #{timeId},</if>
+            <if test="beauticianId != null">beautician_id = #{beauticianId},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="serviceType != null">service_type = #{serviceType},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="serviceOrderDatetime != null">service_order_datetime = #{serviceOrderDatetime},</if>
+            <if test="sumPrice != null">sum_price = #{sumPrice},</if>
+            <if test="realPay != null">real_pay = #{realPay},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="deleteServiceOrderOrderByOrderId" parameterType="String">
+        delete from service_order_order where order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteServiceOrderOrderByOrderIds" parameterType="String">
+        delete from service_order_order where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+</mapper>

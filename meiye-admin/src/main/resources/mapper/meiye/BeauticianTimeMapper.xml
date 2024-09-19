@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.BeauticianTimeMapper">
+    
+    <resultMap type="BeauticianTime" id="BeauticianTimeResult">
+        <result property="timeId"    column="id"    />
+        <result property="beauticianId"    column="beautician_id"    />
+        <result property="beauticianTime"    column="beautician_time"    />
+        <result property="number"    column="number"    />
+    </resultMap>
+
+    <sql id="selectBeauticianTimeVo">
+        select id timeId, beautician_id, beautician_time, number from beautician_time
+    </sql>
+
+    <select id="selectBeauticianTimeList" parameterType="BeauticianTime" resultMap="BeauticianTimeResult">
+        <include refid="selectBeauticianTimeVo"/>
+        <where>  
+            <if test="beauticianId != null "> and beautician_id = #{beauticianId}</if>
+            <if test="beauticianTime != null  and beauticianTime != ''"> and beautician_time = #{beauticianTime}</if>
+            <if test="number != null "> and number = #{number}</if>
+        </where>
+    </select>
+    
+    <select id="selectBeauticianTimeById" parameterType="Long" resultMap="BeauticianTimeResult">
+        <include refid="selectBeauticianTimeVo"/>
+        where id = #{timeId}
+    </select>
+        
+    <insert id="insertBeauticianTime" parameterType="BeauticianTime" useGeneratedKeys="true" keyProperty="timeId">
+        insert into beautician_time
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="beauticianId != null">beautician_id,</if>
+            <if test="beauticianTime != null">beautician_time,</if>
+            <if test="number != null">number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="beauticianId != null">#{beauticianId},</if>
+            <if test="beauticianTime != null">#{beauticianTime},</if>
+            <if test="number != null">#{number},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBeauticianTime" parameterType="BeauticianTime">
+        update beautician_time
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="beauticianId != null">beautician_id = #{beauticianId},</if>
+            <if test="beauticianTime != null">beautician_time = #{beauticianTime},</if>
+            <if test="number != null">number = #{number},</if>
+        </trim>
+        where id = #{timeId}
+    </update>
+
+    <delete id="deleteBeauticianTimeById" parameterType="Long">
+        delete from beautician_time where id = #{timeId}
+    </delete>
+
+    <delete id="deleteBeauticianTimeByIds" parameterType="String">
+        delete from beautician_time where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{timeId}
+        </foreach>
+    </delete>
+</mapper>

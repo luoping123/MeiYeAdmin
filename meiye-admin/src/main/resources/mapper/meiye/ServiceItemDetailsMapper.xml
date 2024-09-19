@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sct.meiye.mapper.ServiceItemDetailsMapper">
+    
+    <resultMap type="ServiceItemDetails" id="ServiceItemDetailsResult">
+        <result property="id"    column="id"    />
+        <result property="serviceId"    column="service_id"    />
+        <result property="swiperUrl"    column="swiper_url"    />
+        <result property="swiperType"    column="swiper_type"    />
+        <result property="content"    column="content"    />
+    </resultMap>
+
+    <sql id="selectServiceItemDetailsVo">
+        select id, service_id, swiper_url, swiper_type, content from service_item_details
+    </sql>
+
+    <select id="selectServiceItemDetailsList" parameterType="ServiceItemDetails" resultMap="ServiceItemDetailsResult">
+        <include refid="selectServiceItemDetailsVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectServiceItemDetailsById" parameterType="Long" resultMap="ServiceItemDetailsResult">
+        <include refid="selectServiceItemDetailsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertServiceItemDetails" parameterType="ServiceItemDetails" useGeneratedKeys="true" keyProperty="id">
+        insert into service_item_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serviceId != null">service_id,</if>
+            <if test="swiperUrl != null">swiper_url,</if>
+            <if test="swiperType != null">swiper_type,</if>
+            <if test="content != null">content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serviceId != null">#{serviceId},</if>
+            <if test="swiperUrl != null">#{swiperUrl},</if>
+            <if test="swiperType != null">#{swiperType},</if>
+            <if test="content != null">#{content},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServiceItemDetails" parameterType="ServiceItemDetails">
+        update service_item_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serviceId != null">service_id = #{serviceId},</if>
+            <if test="swiperUrl != null">swiper_url = #{swiperUrl},</if>
+            <if test="swiperType != null">swiper_type = #{swiperType},</if>
+            <if test="content != null">content = #{content},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteServiceItemDetailsById" parameterType="Long">
+        delete from service_item_details where id = #{id}
+    </delete>
+
+    <delete id="deleteServiceItemDetailsByIds" parameterType="String">
+        delete from service_item_details where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
