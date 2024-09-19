@@ -17,52 +17,52 @@
 
 ## 演示图
 
-![image-20240919214331484](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919214331484.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919214331484.png)
 
-![image-20240919214400437](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919214400437.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919214400437.png)
 
-![image-20240919214424330](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919214424330.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919214424330.png)
 
 **发货**
 
-![image-20240919214448508](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919214448508.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919214448508.png)
 
 小程序页面内容管理：
 
 **尽可能让所有的小程序里面的数据都可以进行修改**，这里轮播图、滚动通知、九宫格导航都可以修改图片、名字以及跳转类型，跳转地址都可以进行修改，并且可以实现真正的跳转
 
-![image-20240919215437456](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919215437456.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919215437456.png)
 
-![image-20240919214519305](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919214519305.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919214519305.png)
 
-![image-20240919214943304](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919214943304.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919214943304.png)
 
-![image-20240919215559379](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919215559379.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919215559379.png)
 
-![image-20240919214927984](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919214927984.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919214927984.png)
 
 **预约管理**
 
-![image-20240919215800316](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919215800316.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919215800316.png)
 
-![image-20240919215841165](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919215841165.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919215841165.png)
 
 **新增美容师排班：**
 
-![image-20240919215939516](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919215939516.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919215939516.png)
 
 **核验美容项目订单券码：**
 
-![image-20240919220214872](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919220214872.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919220214872.png)
 
-![image-20240919220255330](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919220255330.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919220255330.png)
 
 核验成功之后，订单状态改为 待评价：
 
-![image-20240919220404098](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919220404098.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919220404098.png)
 
 用户管理：
 
 可以查看所有已经注册登录的用户信息，包括昵称，手机号等信息，以便于后续的客户回访联系
 
-![image-20240919220537614](I:\桌面\基于若依的美业智慧平台网页端管理系统.assets\image-20240919220537614.png)
+![Image text](https://github.com/luoping123/MeiYeAdmin/blob/main/README.assets/image-20240919220537614.png)
